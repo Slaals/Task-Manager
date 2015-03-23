@@ -1,0 +1,243 @@
+.tree-view {
+	-fx-skin: "com.sun.javafx.scene.control.skin.TreeViewSkin";
+	-fx-background-color: -fx-box-border, -fx-control-inner-background;
+	-fx-background-insets: 0, 1;
+
+	-fx-padding: 1; 
+}
+
+.tree-cell {
+	-fx-background: #283033;
+}
+
+.tree-cell:selected {
+	-fx-background-color: #8EBD5C;
+}
+
+.tree-cell:hover .label {
+	-fx-background: #526269;
+}
+
+.mainpanel {
+	-fx-background: #4D4D4E;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-opacity: 0;
+}
+
+.tab-pane {
+    -fx-tab-min-width: 90px;
+}
+
+.tab {
+    -fx-background-insets: 0 1 0 1,0,0;
+    -fx-cursor: hand;
+}
+
+.tab-pane .tab {
+	-fx-background-color: #283033;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: #8EBD5C;
+    -fx-focus-color: transparent;
+}
+
+.tab .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-text-fill: white;
+}
+
+.tab:selected .tab-label { 
+	-fx-alignment: CENTER;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.list-view {
+	-fx-focus-color: transparent;
+	-fx-background-color: transparent;
+}
+
+.list-view .scroll-bar:horizontal {
+	-fx-background-color: transparent;
+}
+
+.list-view .scroll-bar:horizontal .thumb {
+	-fx-background-color: #8EBD5C;
+}
+
+.list-cell {
+	-fx-cursor: hand;
+	-fx-background-color: #3E4A4F;
+}
+
+.list-cell:filled:hover {
+	-fx-background-color: #8EBD5C;
+}
+
+.project-tab {
+	-fx-background-color: #283033;
+	-fx-padding: 15px;
+	-fx-background-radius: 5px;
+	-fx-border-color: #5E7178;
+	-fx-border-width: 1px;
+	-fx-border-radius: 5px;
+}
+
+.text-area {
+    -fx-background-color: #3E4A4F;
+    -fx-font-size: 14pt;
+    -fx-font-family: Arial;
+    -fx-text-fill: white;
+}
+
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+    -fx-color: #8EBD5C;
+}
+
+.text-area .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .content{
+    -fx-background-color: transparent;
+}
+
+.table-view {
+    -fx-base: #3E4A4F;
+    -fx-control-inner-background: #3E4A4F;
+    -fx-background-color: #3E4A4F;
+    -fx-table-cell-border-color: transparent;
+    -fx-table-header-border-color: transparent;
+    -fx-padding: 5;
+}
+
+.table-view .text-area {
+    -fx-background-color: #8EBD5C;
+    -fx-font-size: 12pt;
+    -fx-text-fill: white;
+    -fx-border-width: 0;
+}
+
+.table-view .text-area .scroll-pane {
+    -fx-background-color: transparent;
+    -fx-color: #8EBD5C;
+}
+
+.table-view .text-area .scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.table-view .text-area .scroll-pane .content {
+    -fx-background-color: transparent;
+}
+
+.table-view .scroll-bar:vertical .thumb {
+	-fx-background-color: #8EBD5C;
+}
+
+.table-view .scroll-bar:horizontal .increment-arrow,
+.table-view .scroll-bar:horizontal .decrement-arrow,
+.table-view .scroll-bar:horizontal .increment-button,
+.table-view .scroll-bar:horizontal .decrement-button {
+	-fx-padding: 0;
+}
+
+.table-view .column-header-background {
+	-fx-background-color: transparent;
+}
+
+.table-view .column-header, .table-view .filler {
+	-fx-background-color: transparent;
+	-fx-border-width: 0 0 1px 0;
+	-fx-border-color: white;
+	-fx-border-insets: 0 10px 1px 0;
+}
+
+.table-view .column-header .label {
+	-fx-font-size: 14pt;
+	-fx-alignment: center-left;
+}
+
+.table-view .table-row-cell:filled:focused {
+	-fx-background-color: #8EBD5C;
+}
+
+.date-cell {
+	-fx-text-fill: white;
+	-fx-alignment: center;
+	-fx-font-size: 14pt;
+	-fx-font-weight: bold;
+}
+
+.menu-bar {
+	-fx-background-color: #484849;
+	-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 0, 0, 0, 3);
+}
+
+.menu:hover {
+	-fx-background-color: #283033;
+}
+
+.menu:showing {
+	-fx-background-color: #283033;
+}
+
+.menu-bar .label {
+	-fx-text-fill: white;
+}
+
+.menu-item {
+	-fx-background-color: transparent;
+}
+
+.menu-item .label {
+	-fx-text-fill: black;
+}
+
+.menu-item:focused .label {
+	-fx-text-fill: white;
+}
+
+.menu-item:focused {
+	-fx-background-color: #8EBD5C;
+}
+
+.progress-bar .track {
+	-fx-background-radius: 0;
+	-fx-background-color: transparent;
+}
+
+.progress-bar .bar {
+	-fx-background-radius: 0;
+}
+
+.progress-bar {
+	-fx-background-radius: 0;
+	-fx-background-color: transparent;
+	-fx-padding: 0;
+}
+
+.red-bar {
+	-fx-accent: #8F4B37;
+}
+
+.orange-bar {
+	-fx-accent: #A87327;
+}
+
+.yellow-bar {
+	-fx-accent: #A88100;
+}
+
+.blue-bar {
+	-fx-accent: #3D4769;
+}
+
+.green-bar {
+	-fx-accent: #8EBD5C;
+}

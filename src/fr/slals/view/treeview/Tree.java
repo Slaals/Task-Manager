@@ -269,7 +269,7 @@ public class Tree extends TreeView<String> {
 				ProjectItem item = (ProjectItem) getTreeItem();
 				item.getProject().setTitle(str);
 				
-				// Update the tab title is open
+				// Update the tab title if open
 				for(Tab tab : projectPane.getTabs()) {
 					ProjectTab projectTab = (ProjectTab) tab;
 					if(projectTab.getProjectItem().equals(item)) {
@@ -282,6 +282,7 @@ public class Tree extends TreeView<String> {
 		
 		private void createTextField() {
 			textField = new TextField(getString());
+			textField.setStyle("-fx-background-color: transparent");
 			
 			textField.setOnKeyReleased((event) -> {
 				if(event.getCode() == KeyCode.ENTER) {
@@ -293,7 +294,7 @@ public class Tree extends TreeView<String> {
 
 			textField.focusedProperty().addListener((bool, oldValue, newValue) -> {
 				if(!newValue) {
-					commitEdit(textField.getText());
+					commitEdit(((TextField)getGraphic()).getText());
 				}
 			});
 		}

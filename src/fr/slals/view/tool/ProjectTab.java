@@ -51,10 +51,10 @@ public class ProjectTab extends Tab {
 			}
 			
 			fileList.refreshFileList(project.getProject().getFiles());
-			fileList.getPane().getChildren().add(btnAddFile);
+			//fileList.getPane().getChildren().add(btnAddFile);
 		});
 		
-		fileList.getPane().getChildren().add(btnAddFile);
+		//fileList.addAddBtn(btnAddFile);
 		
 		initProjectTab();
 		
@@ -75,11 +75,15 @@ public class ProjectTab extends Tab {
 	private void initProjectTab() {
 		mainPane = new VBox();
 		mainPane.setSpacing(20);
+		mainPane.getStyleClass().add("project-tab");
 		
 		txtDesc = new TextArea();
 		txtDesc.setText(project.getProject().getDescription());
 		txtDesc.setWrapText(true);
 		txtDesc.setMinHeight(150);
+		txtDesc.setOnKeyReleased((event) -> {
+			project.getProject().setDescription(txtDesc.getText());
+		});
 		
 		taskTable.setPrefHeight(Toolkit.getDefaultToolkit().getScreenSize().getHeight());
 		taskTable.setPrefWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth());

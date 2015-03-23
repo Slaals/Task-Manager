@@ -10,7 +10,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -19,6 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
@@ -89,6 +89,8 @@ public class TaskTable extends TableView<TaskCell> {
 		doneColumn.setEditable(false);
 		dateColumn.setEditable(false);
 		
+		dateColumn.getStyleClass().add("date-cell");
+		
 		initCellFactory(taskColumn, doneColumn);
 		
 		setItems(data);
@@ -130,6 +132,8 @@ public class TaskTable extends TableView<TaskCell> {
 								text.setWrappingWidth(taskColumn.getWidth());
 								text.wrappingWidthProperty().bind(widthProperty());
 								setWrapText(true);
+								
+								text.setFill(Color.WHITE);
 								
 								setGraphic(text);
 								
@@ -183,11 +187,8 @@ public class TaskTable extends TableView<TaskCell> {
 		
 		public TextFieldTaskCell() {
 			MenuItem delMenu = new MenuItem("Delete task");
-			MenuItem editName = new MenuItem("Edit");
 
 			contextMenu.getItems().add(delMenu);
-			contextMenu.getItems().add(new SeparatorMenuItem());
-			contextMenu.getItems().add(editName);
 			
 			delMenu.setOnAction((event) -> {
 				// Remove the task from the data
@@ -196,10 +197,6 @@ public class TaskTable extends TableView<TaskCell> {
 				data.remove(getTableRow().getIndex());
 				
 				getTableView().getSelectionModel().clearSelection();
-			});
-			
-			editName.setOnAction((event) -> {
-				startEdit();
 			});
 		}
 
@@ -246,24 +243,22 @@ public class TaskTable extends TableView<TaskCell> {
 		
 		private void createTextField() {
 			textField = new TextArea(getString());
+			textField.setStyle("-fx-font-size: 11pt");
 			
 			textField.setPrefHeight(100);
 			textField.setWrapText(true);
 			
 			textField.setOnKeyReleased((event) -> {
-				if(event.getCode() == KeyCode.ENTER) {
-					commitEdit(textField.getText());
-				} else if(event.getCode() == KeyCode.ESCAPE) {
+				if(event.getCode() == KeyCode.ESCAPE) {
 					cancelEdit();
 				}
 			});
-
-			// TODO revoir le focus
-			/*textField.focusedProperty().addListener((bool, oldValue, newValue) -> {
+			
+			textField.focusedProperty().addListener((bool, oldValue, newValue) -> {
 				if(!newValue) {
-					commitEdit(textField.getText());
+					commitEdit(((TextArea)getGraphic()).getText());
 				}
-			});*/
+			});
 		}
 		
 		public String getString() {
