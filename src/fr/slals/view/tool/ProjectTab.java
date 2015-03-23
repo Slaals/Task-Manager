@@ -6,10 +6,12 @@ import java.util.List;
 
 import fr.slals.data.Task;
 import fr.slals.view.treeview.ProjectItem;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
@@ -24,6 +26,7 @@ public class ProjectTab extends Tab {
 
 	private VBox mainPane;
 	private TextArea txtDesc;
+	private StackPane fileListPane;
 	private FileList fileList;
 	private TaskTable taskTable;
 
@@ -33,12 +36,15 @@ public class ProjectTab extends Tab {
 	public ProjectTab(ProjectItem project) {
 		super(project.getProject().getTitle());
 		
+		fileListPane = new StackPane();
+		
 		this.project = project;
 		
 		fileList = new FileList(project.getProject().getFiles());
 		taskTable = new TaskTable(project.getProject().getTasks());
 		
 		Button btnAddFile = new Button("+");
+		btnAddFile.getStyleClass().add("add-file-button");
 		btnAddFile.setOnAction((btnEvent) -> {
 			FileChooser fChooser = new FileChooser();
 			fChooser.setTitle("Pick the file you want to link to the project : " + project.getProject().getTitle());
@@ -50,11 +56,13 @@ public class ProjectTab extends Tab {
 				}
 			}
 			
-			fileList.refreshFileList(project.getProject().getFiles());
-			//fileList.getPane().getChildren().add(btnAddFile);
+			fileList.setFileList(project.getProject().getFiles());
 		});
 		
-		//fileList.addAddBtn(btnAddFile);
+		fileListPane.getChildren().add(fileList);
+		fileListPane.getChildren().add(btnAddFile);
+		
+		StackPane.setAlignment(btnAddFile, Pos.TOP_LEFT);
 		
 		initProjectTab();
 		
@@ -89,7 +97,7 @@ public class ProjectTab extends Tab {
 		taskTable.setPrefWidth(Toolkit.getDefaultToolkit().getScreenSize().getWidth());
 		
 		mainPane.getChildren().add(txtDesc);
-		mainPane.getChildren().add(fileList);
+		mainPane.getChildren().add(fileListPane);
 		mainPane.getChildren().add(taskTable);
 		
 		setContent(mainPane);

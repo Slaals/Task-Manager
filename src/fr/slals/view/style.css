@@ -78,6 +78,18 @@
 	-fx-background-color: #8EBD5C;
 }
 
+.add-file-button {
+	-fx-background-color: rgba(142, 189, 92, 0.5);
+	-fx-focus-color: transparent;
+	-fx-text-fill: white;
+	-fx-font-height: bold;
+}
+
+.add-file-button:hover {
+	-fx-background-color: #8EBD5C;
+	-fx-cursor: hand;
+}
+
 .project-tab {
 	-fx-background-color: #283033;
 	-fx-padding: 15px;

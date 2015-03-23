@@ -291,12 +291,6 @@ public class Tree extends TreeView<String> {
 					cancelEdit();
 				}
 			});
-
-			textField.focusedProperty().addListener((bool, oldValue, newValue) -> {
-				if(!newValue) {
-					commitEdit(((TextField)getGraphic()).getText());
-				}
-			});
 		}
 		
 		private String getString() {

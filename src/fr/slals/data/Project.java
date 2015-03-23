@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 /**
  * Task Manager
  * @author Slals - 2015
@@ -11,7 +14,7 @@ import java.util.Observable;
  */
 public class Project extends Observable {
 
-	private ArrayList<File> files;
+	private ObservableList<File> files;
 	private ArrayList<Task> tasks;
 	private String title;
 	private String description;
@@ -24,7 +27,7 @@ public class Project extends Observable {
 		this.title = title;
 		this.description = description;
 		
-		files = new ArrayList<File>();
+		files = FXCollections.observableArrayList();
 		tasks = new ArrayList<Task>();
 	}
 	
@@ -32,7 +35,7 @@ public class Project extends Observable {
 		this.title = title;
 		this.description = "";
 		
-		files = new ArrayList<File>();
+		files = FXCollections.observableArrayList();
 		tasks = new ArrayList<Task>();
 	}
 	
@@ -42,12 +45,12 @@ public class Project extends Observable {
 	 * @param files
 	 * @param tasks
 	 */
-	public Project(String title, String description, ArrayList<File> files, ArrayList<Task> tasks) {
+	public Project(String title, String description, ObservableList<File> files, ArrayList<Task> tasks) {
 		this.title = title;
 		this.description = description;
 		
 		if(files == null) {
-			this.files = new ArrayList<File>();
+			this.files = files = FXCollections.observableArrayList();
 		} else {
 			this.files = files;
 		}
@@ -90,7 +93,7 @@ public class Project extends Observable {
 	/**
 	 * @return files linked to the project
 	 */
-	public ArrayList<File> getFiles() {
+	public ObservableList<File> getFiles() {
 		return files;
 	}
 
