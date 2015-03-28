@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Properties;
 
 public class TaskManagerProperties extends Properties {
@@ -47,6 +48,36 @@ public class TaskManagerProperties extends Properties {
 				}
 			}
 		}
+	}
+	
+	public ArrayList<String> getExts(String img) {
+		ArrayList<String> res = new ArrayList<String>();
+		String[] exts = getProperty("EXT").split(";");
+		for(int i = 0; i < exts.length; i++) {
+			String value = getProperty("EXT_" + exts[i]);
+			if(value != null && value.equals(img)) {
+				res.add(exts[i]);
+			}
+		}
+		return res;
+	}
+	
+	public void setExt(String ext) {
+		if(!extExists(ext)) {
+			setProperty("EXT", getProperty("EXT") + ";" + ext.toUpperCase());
+		}
+	}
+	
+	public boolean extExists(String ext) {
+		ext = ext.toUpperCase();
+		String[] exts = getProperty("EXT").split(";");
+		for(String propExt : exts) {
+			if(ext.equals(propExt)) {
+				return true;
+			} 
+		}
+		
+		return false;
 	}
 	
 	public void save() {

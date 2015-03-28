@@ -17,7 +17,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -38,8 +37,6 @@ public class App extends Application {
 		mainPane.setPrefSize(1000, 800);
 		
 		scn.getStylesheets().add(App.class.getResource("style.css").toExternalForm());
-		
-		scn.setFill(Color.web("#A0C0CC"));
 		
 		primaryStage.setTitle("Task manager");
 		primaryStage.setScene(scn);
@@ -76,7 +73,7 @@ public class App extends Application {
 		contentPane.getChildren().add(tree);
 		contentPane.getChildren().add(projectPane);
 		
-		mainPane.getStyleClass().add("mainpanel");
+		mainPane.getStyleClass().add("background");
 		
 		mainPane.setTop(createMenuBar());
 		mainPane.setCenter(contentPane);

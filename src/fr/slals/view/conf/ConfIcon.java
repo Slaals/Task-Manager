@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import fr.slals.core.TaskManager;
+import fr.slals.view.App;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -18,11 +19,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -38,8 +40,12 @@ public class ConfIcon extends Stage {
 	
 	private GridPane content;
 	
-	// Make a link betwin an image and her name (since Image can't have this information)
+	// Make a link between an image and her name (since Image can't have this information)
 	private HashMap<Image, String> imgName;
+	
+	private ListView<String> extList;
+	
+	private ObservableList<String> ext = FXCollections.observableArrayList();
 	
 	public ConfIcon() {
 		super();
@@ -50,9 +56,13 @@ public class ConfIcon extends Stage {
 		content = new GridPane();
 		content.setAlignment(Pos.CENTER);
 		
+		content.getStyleClass().add("background");
+		
 		init();
 		
 		Scene scene = new Scene(content);
+		
+		scene.getStylesheets().add(App.class.getResource("style.css").toExternalForm());
 		
 		setTitle("Files icon configuration");
 		setMinHeight(300);
@@ -66,20 +76,6 @@ public class ConfIcon extends Stage {
 	}
 	
 	private void init() {
-		GridPane formPane = new GridPane();
-		
-		Label extLabel = new Label("Extension :");
-		
-		Button btnLink = new Button("Link");
-		
-		TextField txtExt = new TextField();
-		
-		formPane.add(extLabel, 0, 0);
-		formPane.add(btnLink, 1, 0);
-		formPane.add(txtExt, 0, 1);
-		
-		GridPane.setColumnSpan(txtExt, 2); // Cells merge
-		
 		ObservableList<Image> images = fetchImages();
 		
 		ComboBox<Image> imgChoice = new ComboBox<Image>();
@@ -90,14 +86,79 @@ public class ConfIcon extends Stage {
 		
 		Button btnAddIcon = new Button("Add icon...");
 		btnAddIcon.setMaxWidth(Double.MAX_VALUE);
+		btnAddIcon.getStyleClass().add("custom-button");
 		
-		btnLink.setOnAction((event) -> {
-			// Save the properties this way : "Extension"="img name"
-			if(!txtExt.getText().isEmpty()) {
-				TaskManager.PROPERTIES.setProperty(txtExt.getText().toUpperCase(), 
-						imgName.get(imgChoice.getSelectionModel().getSelectedItem()));
-				TaskManager.PROPERTIES.save();
+		TextField extField = new TextField();
+		extField.setMaxWidth(100);
+		extField.getStyleClass().add("field-ext");
+		
+		Button btnAdd = new Button("+");
+		btnAdd.setDisable(true);
+		
+		extList = new ListView<String>(ext);
+		extList.setMaxWidth(100);
+		extList.setMaxHeight(100);
+		
+		extField.setOnKeyReleased(event -> {
+			if(!TaskManager.PROPERTIES.extExists(extField.getText()) && !extField.getText().isEmpty()) {
+				extField.getStyleClass().remove("valide");
+				extField.getStyleClass().add("valide");
+				
+				btnAdd.setDisable(false);
+			} else {
+				extField.getStyleClass().remove("valide");
+				
+				btnAdd.setDisable(true);
 			}
+			
+			if(event.getCode() == KeyCode.ENTER) {
+				String extText = extField.getText();
+				
+				// Save the properties this way : "Extension"="img name"
+				TaskManager.PROPERTIES.setProperty("EXT_" + extText.toUpperCase(), 
+							imgName.get(imgChoice.getSelectionModel().getSelectedItem()));
+				TaskManager.PROPERTIES.setExt(extText);
+				
+				ext.add(extText.toUpperCase());
+					
+				TaskManager.PROPERTIES.save();
+				
+				extField.setText("");
+				extField.requestFocus();
+				
+				extField.getStyleClass().remove("valide");
+				
+				btnAdd.setDisable(true);
+			}
+		});
+		
+		imgChoice.setOnAction(event -> {
+			ext.clear();
+			Image selectedImg = imgChoice.getSelectionModel().getSelectedItem();
+			
+			for(String imgExt : TaskManager.PROPERTIES.getExts(imgName.get(selectedImg))) {
+				ext.add(imgExt);
+			}
+		});
+		
+		btnAdd.setOnAction((event) -> {
+			String extText = extField.getText();
+			
+			// Save the properties this way : "Extension"="img name"
+			TaskManager.PROPERTIES.setProperty("EXT_" + extText.toUpperCase(), 
+						imgName.get(imgChoice.getSelectionModel().getSelectedItem()));
+			TaskManager.PROPERTIES.setExt(extText);
+			
+			ext.add(extText.toUpperCase());
+				
+			TaskManager.PROPERTIES.save();
+			
+			extField.setText("");
+			extField.requestFocus();
+			
+			extField.getStyleClass().remove("valide");
+			
+			btnAdd.setDisable(true);
 		});
 		
 		btnAddIcon.setOnAction((event) -> {
@@ -128,10 +189,16 @@ public class ConfIcon extends Stage {
 		
 		imgChoice.setMaxWidth(Double.MAX_VALUE);
 		imgChoice.setMinHeight(75);
-
-		content.add(formPane, 0, 0);
-		content.add(imgChoice, 1, 0);
-		content.add(btnAddIcon, 1, 1);
+		
+		content.setHgap(10);
+		
+		content.add(imgChoice, 0, 1);
+		content.add(btnAddIcon, 0, 2);
+		content.add(extField, 1, 0);
+		content.add(btnAdd, 2, 0);
+		content.add(extList, 1, 1);
+		
+		GridPane.setRowSpan(extList, 2);
 	}
 	
 	/**
@@ -184,6 +251,8 @@ public class ConfIcon extends Stage {
 	private ObservableList<Image> fetchImages() {
 		final ObservableList<Image> images = FXCollections.observableArrayList();
 		File dirIcons = new File(TaskManager.RESOURCE_PATH + "\\icons");
+		
+		images.add(null);
 		
 		for(File file : dirIcons.listFiles()) {
 			Image img = new Image("file:" + file.getAbsolutePath());

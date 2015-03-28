@@ -18,7 +18,7 @@
 	-fx-background: #526269;
 }
 
-.mainpanel {
+.background {
 	-fx-background: #4D4D4E;
 }
 
@@ -61,6 +61,14 @@
 	-fx-background-color: transparent;
 }
 
+.list-view .scroll-bar:vertical {
+	-fx-background-color: transparent;
+}
+
+.list-view .scroll-bar:vertical .thumb {
+	-fx-background-color: #8EBD5C;
+}
+
 .list-view .scroll-bar:horizontal {
 	-fx-background-color: transparent;
 }
@@ -72,11 +80,25 @@
 .list-cell {
 	-fx-cursor: hand;
 	-fx-background-color: #3E4A4F;
+	-fx-text-fill: white;
+	-fx-font-size: 13;
 }
 
 .list-cell:filled:hover {
 	-fx-background-color: #8EBD5C;
 }
+
+.field-ext {
+	-fx-font-size: 13pt;
+	-fx-focus-color: transparent;
+	-fx-background-color: #8F4B37;
+	-fx-text-fill: white;
+}
+
+.valide {
+	-fx-background-color: #8EBD5C;
+}
+
 
 .add-file-button {
 	-fx-background-color: rgba(142, 189, 92, 0.5);
@@ -252,4 +274,17 @@
 
 .green-bar {
 	-fx-accent: #8EBD5C;
+}
+
+.custom-button {
+	-fx-focus-color: transparent;
+	-fx-color: #8EBD5C;
+	-fx-background-radius: 0;
+	-fx-border-radius: 0;
+	-fx-cursor: hand;
+	-fx-text-fill: white;
+}
+
+.combo-box {
+	-fx-focus-color: transparent;
 }
