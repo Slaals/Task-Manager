@@ -13,19 +13,25 @@ import fr.slals.core.TaskManager;
 import fr.slals.view.App;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -44,6 +50,8 @@ public class ConfIcon extends Stage {
 	private HashMap<Image, String> imgName;
 	
 	private ListView<String> extList;
+	private TextField extField;
+	private Button btnAdd;
 	
 	private ObservableList<String> ext = FXCollections.observableArrayList();
 	
@@ -82,53 +90,44 @@ public class ConfIcon extends Stage {
 		imgChoice.getItems().addAll(images);
 		imgChoice.setButtonCell(new ImageListCell());
 		imgChoice.setCellFactory(listView -> new ImageListCell());
-		imgChoice.getSelectionModel().select(0);
 		
 		Button btnAddIcon = new Button("Add icon...");
 		btnAddIcon.setMaxWidth(Double.MAX_VALUE);
 		btnAddIcon.getStyleClass().add("custom-button");
 		
-		TextField extField = new TextField();
+		extField = new TextField();
 		extField.setMaxWidth(100);
 		extField.getStyleClass().add("field-ext");
 		
-		Button btnAdd = new Button("+");
+		btnAdd = new Button("+");
 		btnAdd.setDisable(true);
+		btnAdd.setMaxHeight(Double.MAX_VALUE);
 		
 		extList = new ListView<String>(ext);
 		extList.setMaxWidth(100);
 		extList.setMaxHeight(100);
 		
 		extField.setOnKeyReleased(event -> {
-			if(!TaskManager.PROPERTIES.extExists(extField.getText()) && !extField.getText().isEmpty()) {
-				extField.getStyleClass().remove("valide");
-				extField.getStyleClass().add("valide");
-				
-				btnAdd.setDisable(false);
-			} else {
-				extField.getStyleClass().remove("valide");
-				
-				btnAdd.setDisable(true);
-			}
-			
-			if(event.getCode() == KeyCode.ENTER) {
-				String extText = extField.getText();
-				
-				// Save the properties this way : "Extension"="img name"
-				TaskManager.PROPERTIES.setProperty("EXT_" + extText.toUpperCase(), 
-							imgName.get(imgChoice.getSelectionModel().getSelectedItem()));
-				TaskManager.PROPERTIES.setExt(extText);
-				
-				ext.add(extText.toUpperCase());
+			if(controlValidity()) {
+				if(event.getCode() == KeyCode.ENTER) {
+					String extText = extField.getText();
 					
-				TaskManager.PROPERTIES.save();
-				
-				extField.setText("");
-				extField.requestFocus();
-				
-				extField.getStyleClass().remove("valide");
-				
-				btnAdd.setDisable(true);
+					// Save the properties this way : "Extension"="img name"
+					TaskManager.PROPERTIES.setProperty("EXT_" + extText.toUpperCase(), 
+								imgName.get(imgChoice.getSelectionModel().getSelectedItem()));
+					TaskManager.PROPERTIES.setExt(extText);
+					
+					ext.add(extText.toUpperCase());
+						
+					TaskManager.PROPERTIES.save();
+					
+					extField.setText("");
+					extField.requestFocus();
+					
+					extField.getStyleClass().remove("valide");
+					
+					btnAdd.setDisable(true);
+				}
 			}
 		});
 		
@@ -187,18 +186,76 @@ public class ConfIcon extends Stage {
 			}
 		});
 		
+		extList.setCellFactory((lv) -> {
+			ListCell<String> cell = new ListCell<>();
+			
+			ContextMenu contextMenu = new ContextMenu();
+				
+			MenuItem deleteMenu = new MenuItem("Delete");
+			deleteMenu.setOnAction((event) -> {
+				TaskManager.PROPERTIES.deleteExt(extList.getSelectionModel().getSelectedItem());
+				ext.remove(extList.getSelectionModel().getSelectedItem());
+			});
+			
+			cell.itemProperty().addListener((obs, oldItem, newItem) -> {
+				if(newItem != null) {
+					Text txt = new Text(newItem);
+					txt.setFill(Color.web("#FFFFFF"));
+					cell.setGraphic(txt);
+				}
+			});
+			
+			cell.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
+				if(isNowEmpty) {
+					cell.setContextMenu(null);
+					cell.setGraphic(null);
+				} else {
+					cell.setContextMenu(contextMenu);
+				}
+			});
+			
+			cell.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+			
+			contextMenu.getItems().add(deleteMenu);
+			
+			return cell;
+		});
+		
 		imgChoice.setMaxWidth(Double.MAX_VALUE);
 		imgChoice.setMinHeight(75);
 		
 		content.setHgap(10);
+		content.setVgap(10);
+		
+		Separator sep = new Separator();
+		sep.setOrientation(Orientation.VERTICAL);
 		
 		content.add(imgChoice, 0, 1);
 		content.add(btnAddIcon, 0, 2);
-		content.add(extField, 1, 0);
-		content.add(btnAdd, 2, 0);
-		content.add(extList, 1, 1);
+		content.add(sep, 1, 0);
+		content.add(extField, 2, 0);
+		content.add(btnAdd, 3, 0);
+		content.add(extList, 2, 1);
 		
+		GridPane.setRowSpan(sep, 3);
 		GridPane.setRowSpan(extList, 2);
+	}
+	
+	private boolean controlValidity() {
+		if(!TaskManager.PROPERTIES.extExists(extField.getText()) && !extField.getText().isEmpty()) {
+			extField.getStyleClass().remove("valide");
+			extField.getStyleClass().add("valide");
+			
+			btnAdd.setDisable(false);
+			
+			return true;
+		} else {
+			extField.getStyleClass().remove("valide");
+			
+			btnAdd.setDisable(true);
+			
+			return false;
+		}
 	}
 	
 	/**
@@ -251,8 +308,6 @@ public class ConfIcon extends Stage {
 	private ObservableList<Image> fetchImages() {
 		final ObservableList<Image> images = FXCollections.observableArrayList();
 		File dirIcons = new File(TaskManager.RESOURCE_PATH + "\\icons");
-		
-		images.add(null);
 		
 		for(File file : dirIcons.listFiles()) {
 			Image img = new Image("file:" + file.getAbsolutePath());

@@ -63,18 +63,33 @@ public class TaskManagerProperties extends Properties {
 	}
 	
 	public void setExt(String ext) {
-		if(!extExists(ext)) {
+		if(!extExistsInList(ext)) {
 			setProperty("EXT", getProperty("EXT") + ";" + ext.toUpperCase());
 		}
 	}
 	
-	public boolean extExists(String ext) {
+	public void deleteExt(String ext) {
+		ext = ext.toUpperCase();
+		remove("EXT_" + ext);
+		save();
+	}
+	
+	private boolean extExistsInList(String ext) {
 		ext = ext.toUpperCase();
 		String[] exts = getProperty("EXT").split(";");
 		for(String propExt : exts) {
 			if(ext.equals(propExt)) {
 				return true;
 			} 
+		}
+		
+		return false;
+	}
+	
+	public boolean extExists(String ext) {
+		ext = ext.toUpperCase();
+		if(getProperty("EXT_" + ext) != null) {
+			return true;
 		}
 		
 		return false;

@@ -82,6 +82,7 @@
 	-fx-background-color: #3E4A4F;
 	-fx-text-fill: white;
 	-fx-font-size: 13;
+	-fx-alignment: center;
 }
 
 .list-cell:filled:hover {
@@ -276,15 +277,22 @@
 	-fx-accent: #8EBD5C;
 }
 
-.custom-button {
+.button {
 	-fx-focus-color: transparent;
 	-fx-color: #8EBD5C;
 	-fx-background-radius: 0;
 	-fx-border-radius: 0;
 	-fx-cursor: hand;
 	-fx-text-fill: white;
+	-fx-focus-color: transparent;
 }
 
 .combo-box {
 	-fx-focus-color: transparent;
+}
+
+.text-field {
+	-fx-focus-color: transparent;
+	-fx-border-radius: 0;
+	-fx-background-radius: 0;
 }

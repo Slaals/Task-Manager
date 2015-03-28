@@ -3,6 +3,7 @@ package fr.slals.view.conf;
 import java.io.File;
 
 import fr.slals.core.TaskManager;
+import fr.slals.view.App;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -30,9 +31,12 @@ public class ConfPath extends Stage {
 		content = new GridPane();
 		content.setAlignment(Pos.CENTER);
 		
+		content.getStyleClass().add("background");
+		
 		init();
 		
 		Scene scene = new Scene(content);
+		scene.getStylesheets().add(App.class.getResource("style.css").toExternalForm());
 		
 		setTitle("Paths configuration");
 		setMinHeight(300);
