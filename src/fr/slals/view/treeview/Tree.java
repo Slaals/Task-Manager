@@ -44,7 +44,9 @@ public class Tree extends TreeView<String> {
 		itemsName = TaskManager.TREE_DATA.getNodesName();
 		root = new TreeItem<String>();
 		
-		createRootItems();
+		if(!TaskManager.TREE_DATA.getData().isEmpty()) {
+			createRootItems();
+		}
 		
 		setRoot(root);
 		

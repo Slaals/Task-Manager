@@ -8,7 +8,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import fr.slals.core.TaskManager;
 import fr.slals.data.Task;
 
 /**
@@ -22,8 +21,8 @@ public class TaskCell {
 	
 	private ImageView imgView;
 	
-	private Image imgDone = new Image("file:" + TaskManager.RESOURCE_PATH + "done.png");
-	private Image imgTodo = new Image("file:" + TaskManager.RESOURCE_PATH + "todo.png");
+	private Image imgDone = new Image(getClass().getClassLoader().getResource("resources/src/").toString() + "done.png");
+	private Image imgTodo = new Image(getClass().getClassLoader().getResource("resources/src/").toString() + "todo.png");
 	
 	private StringProperty label = new SimpleStringProperty();
 	private ObjectProperty<ImageView> done = new SimpleObjectProperty<ImageView>();

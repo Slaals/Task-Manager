@@ -134,10 +134,10 @@ public class FileList extends ListView<File> {
 		String propKey = file.getName().substring(file.getName().lastIndexOf('.') + 1).toUpperCase();
 		if(file.exists()) {
 			if(TaskManager.PROPERTIES.containsKey("EXT_" + propKey)) {
-				img.setImage(new Image("file:" + TaskManager.RESOURCE_PATH + "\\icons\\" + 
+				img.setImage(new Image(getClass().getClassLoader().getResource("resources/src/icons/").toString() + 
 								TaskManager.PROPERTIES.getProperty("EXT_" + propKey) + ".png"));
 			} else {
-				img.setImage(new Image("file:" + TaskManager.RESOURCE_PATH + "\\icons\\default.png"));
+				img.setImage(new Image(getClass().getClassLoader().getResource("resources/src/icons/default.png").toString()));
 			}
 			
 			return img;

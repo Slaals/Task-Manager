@@ -13,8 +13,6 @@ public class TaskManager {
 	
 	public static TaskManagerProperties PROPERTIES = new TaskManagerProperties();
 	
-	public static final String RESOURCE_PATH = System.getProperty("user.dir") + "\\src\\resources\\src\\";
-	
 	public static Data TREE_DATA = Data.getTreeData();
 	
 	public static void main(String[] args) {

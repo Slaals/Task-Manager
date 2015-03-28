@@ -15,7 +15,7 @@ public class TaskManagerProperties extends Properties {
 
 	private static final long serialVersionUID = 1L;
 	
-	private static final String CONF_PATH = System.getProperty("user.dir") + "\\src\\resources\\conf\\config.properties";
+	private static String CONF_PATH = System.getProperty("user.dir") + "\\config.properties";
 	
 	public TaskManagerProperties() {
 		super();
@@ -25,6 +25,11 @@ public class TaskManagerProperties extends Properties {
 		if(!file.exists()) {
 			try {
 				BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+				
+				String path = System.getProperty("user.dir").replaceAll("\\\\", "\\\\\\\\");
+				
+				writer.append("EXT=\n");
+				writer.append("DATA_PATH=" + path);
 				
 				writer.close();
 			} catch (IOException e) {

@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -267,7 +268,7 @@ public class ConfIcon extends Stage {
 		InputStream inStream = null;
 		OutputStream outStream = null;
 		
-		String src = TaskManager.RESOURCE_PATH + "\\icons\\";
+		String src = getClass().getClassLoader().getResource("/fr/slals/resources/src/icons/").toString();
 		String name = "";
 		
 		int indName = 0;
@@ -307,13 +308,18 @@ public class ConfIcon extends Stage {
 	 */
 	private ObservableList<Image> fetchImages() {
 		final ObservableList<Image> images = FXCollections.observableArrayList();
-		File dirIcons = new File(TaskManager.RESOURCE_PATH + "\\icons");
 		
-		for(File file : dirIcons.listFiles()) {
-			Image img = new Image("file:" + file.getAbsolutePath());
-			images.add(img);
+		try {
+			File dirIcons = new File(getClass().getClassLoader().getResource("resources/src/icons/").toURI());
 			
-			imgName.put(img, file.getName().substring(0, file.getName().indexOf('.')));
+			for(File file : dirIcons.listFiles()) {
+				Image img = new Image("file:" + file.getAbsolutePath());
+				images.add(img);
+				
+				imgName.put(img, file.getName().substring(0, file.getName().indexOf('.')));
+			}
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
 		}
 		
 		return images;

@@ -9,6 +9,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -101,11 +102,8 @@ public class Data {
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		
 		File file;
-		if(TaskManager.PROPERTIES.getProperty("DATA_PATH") == null) {
-			file = new File(TaskManager.RESOURCE_PATH + "\\data.xml");
-		} else {
-			file = new File(TaskManager.PROPERTIES.getProperty("DATA_PATH") + "\\data.xml");
-		}
+		
+		file = new File(TaskManager.PROPERTIES.getProperty("DATA_PATH") + "\\data.xml");
 		
 		if(file.exists()) {
 			Document document = builder.parse(file);
@@ -141,6 +139,30 @@ public class Data {
 			}
 		} else {
 			System.out.println("Can't find data file");
+			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+			
+			Document doc = docBuilder.newDocument();
+			Element rootElement = doc.createElement("root");
+			doc.appendChild(rootElement);
+			
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer;
+			try {
+				transformer = transformerFactory.newTransformer();
+				
+				DOMSource source = new DOMSource(doc);
+				
+				File srcFile = new File(TaskManager.PROPERTIES.getProperty("DATA_PATH") + "\\data.xml");
+
+				StreamResult result = new StreamResult(srcFile);
+				
+				transformer.transform(source, result);
+			} catch (TransformerConfigurationException e) {
+				e.printStackTrace();
+			} catch (TransformerException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -242,12 +264,8 @@ public class Data {
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource source = new DOMSource(doc);
 		
-		File file = null;
-		if(TaskManager.PROPERTIES.getProperty("DATA_PATH") == null) {
-			file = new File(TaskManager.RESOURCE_PATH + "\\data.xml");
-		} else {
-			file = new File(TaskManager.PROPERTIES.getProperty("DATA_PATH") + "\\data.xml");
-		}
+		File file = new File(TaskManager.PROPERTIES.getProperty("DATA_PATH") + "\\data.xml");
+
 		StreamResult result = new StreamResult(file);
 		
 		transformer.transform(source, result);

@@ -11,10 +11,12 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TreeItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -41,6 +43,18 @@ public class App extends Application {
 		primaryStage.setTitle("Task manager");
 		primaryStage.setScene(scn);
 		primaryStage.show();
+		
+		ContextMenu contextMenu = new ContextMenu();
+		MenuItem addCatItem = new MenuItem("Add category");
+		
+		addCatItem.setOnAction(event -> {
+			TreeItem<String> cat = new TreeItem<String>("New category");
+			tree.getRoot().getChildren().add(cat);
+		});
+		
+		contextMenu.getItems().add(addCatItem);
+		
+		tree.setContextMenu(contextMenu);
 	}
 	
 	@Override

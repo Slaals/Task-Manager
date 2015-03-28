@@ -54,11 +54,7 @@ public class ConfPath extends Stage {
 		pathField.setEditable(false);
 		pathField.setPrefWidth(300);
 		
-		if(TaskManager.PROPERTIES.getProperty("DATA_PATH") == null) {
-			pathField.setText(TaskManager.RESOURCE_PATH);
-		} else {
-			pathField.setText(TaskManager.PROPERTIES.getProperty("DATA_PATH"));
-		}
+		pathField.setText(TaskManager.PROPERTIES.getProperty("DATA_PATH"));
 		
 		DirectoryChooser dirChooser = new DirectoryChooser();
 		dirChooser.setTitle("Choose the path for your data");
